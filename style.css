@@ -1,0 +1,247 @@
+/* ─── Root Variables ─────────────────────────────────── */
+:root {
+  --bg:          #0e0e10;
+  --surface:     #1a1a1e;
+  --surface-2:   #26262c;
+  --accent:      #f4a140;
+  --accent-glow: rgba(244, 161, 64, 0.35);
+  --op-bg:       #2e2e36;
+  --op-color:    #f4a140;
+  --num-bg:      #222228;
+  --num-hover:   #2e2e38;
+  --clear-bg:    #3a2020;
+  --clear-color: #ff6b6b;
+  --eq-bg:       #f4a140;
+  --eq-color:    #0e0e10;
+  --text-main:   #f0f0f0;
+  --text-dim:    #888;
+  --radius-card: 36px;
+  --radius-btn:  18px;
+  --transition:  0.12s ease;
+}
+
+/* ─── Base ───────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: var(--bg);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'DM Mono', monospace;
+  padding: 24px 16px;
+  overflow-x: hidden;
+}
+
+/* Subtle grid background */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, .02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, .02) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+}
+
+/* ─── Calculator Shell ───────────────────────────────── */
+.calc-shell {
+  width: 100%;
+  max-width: 380px;
+  background: var(--surface);
+  border-radius: var(--radius-card);
+  overflow: hidden;
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, .07),
+    0 32px 80px rgba(0, 0, 0, .7),
+    0 0 80px var(--accent-glow);
+}
+
+/* ─── Header Bar ─────────────────────────────────────── */
+.calc-header {
+  padding: 20px 28px 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.calc-brand {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 13px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+.calc-dots {
+  display: flex;
+  gap: 6px;
+}
+
+.calc-dots span {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: block;
+}
+
+.calc-dots span:nth-child(1) { background: #ff5f56; }
+.calc-dots span:nth-child(2) { background: #febc2e; }
+.calc-dots span:nth-child(3) { background: #27c93f; }
+
+/* ─── Display ────────────────────────────────────────── */
+.calc-display {
+  padding: 16px 28px 24px;
+  text-align: right;
+  min-height: 120px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 6px;
+}
+
+.calc-expr {
+  font-size: 15px;
+  color: var(--text-dim);
+  min-height: 20px;
+  letter-spacing: .04em;
+  word-break: break-all;
+  transition: opacity .2s;
+}
+
+.calc-result {
+  font-family: 'DM Mono', monospace;
+  font-size: 52px;
+  font-weight: 300;
+  color: var(--text-main);
+  line-height: 1;
+  word-break: break-all;
+  transition: transform .08s ease, color .15s;
+}
+
+.calc-result.bump {
+  transform: scale(1.04);
+  color: var(--accent);
+}
+
+/* ─── Keypad ─────────────────────────────────────────── */
+.calc-keypad {
+  padding: 8px 20px 28px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+
+/* ─── Buttons ────────────────────────────────────────── */
+.btn-calc {
+  all: unset;
+  cursor: pointer;
+  border-radius: var(--radius-btn);
+  height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'DM Mono', monospace;
+  font-size: 22px;
+  font-weight: 400;
+  user-select: none;
+  transition:
+    background var(--transition),
+    transform var(--transition),
+    box-shadow var(--transition);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Ripple effect */
+.btn-calc::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, .08);
+  border-radius: inherit;
+  opacity: 0;
+  transform: scale(.5);
+  transition: opacity .25s, transform .25s;
+}
+
+.btn-calc:active::after {
+  opacity: 1;
+  transform: scale(1);
+  transition: none;
+}
+
+.btn-calc:active {
+  transform: scale(.94);
+}
+
+/* Number buttons */
+.btn-num {
+  background: var(--num-bg);
+  color: var(--text-main);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .06);
+}
+
+.btn-num:hover { background: var(--num-hover); }
+
+/* Operator buttons */
+.btn-op {
+  background: var(--op-bg);
+  color: var(--op-color);
+  font-size: 24px;
+}
+
+.btn-op:hover { background: #38383e; }
+
+/* Clear button */
+.btn-clear {
+  background: var(--clear-bg);
+  color: var(--clear-color);
+}
+
+.btn-clear:hover { background: #462828; }
+
+/* Equals button */
+.btn-eq {
+  background: var(--eq-bg);
+  color: var(--eq-color);
+  font-size: 26px;
+  box-shadow: 0 8px 24px rgba(244, 161, 64, .4);
+}
+
+.btn-eq:hover {
+  background: #f9b860;
+  box-shadow: 0 12px 32px rgba(244, 161, 64, .5);
+}
+
+/* Wide zero button */
+.btn-wide {
+  grid-column: span 2;
+  justify-content: flex-start;
+  padding-left: 32px;
+}
+
+/* ─── Footer ─────────────────────────────────────────── */
+.calc-footer {
+  text-align: center;
+  padding: 0 0 22px;
+  font-size: 11px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, .12);
+  font-family: 'Syne', sans-serif;
+}
+
+/* ─── Responsive ─────────────────────────────────────── */
+@media (max-width: 400px) {
+  .calc-result  { font-size: 40px; }
+  .btn-calc     { height: 64px; font-size: 20px; }
+  .calc-keypad  { gap: 10px; padding: 8px 16px 24px; }
+}
